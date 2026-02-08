@@ -1,0 +1,28 @@
+--- README.md
++++ README.md
+@@ -21,1 +21,25 @@
+ in conjunction with locallama to properly copy paste in and out of a docker. 
++
++## Workflow
++
++1. Start a web chat (e.g., Gemini).
++2. Start this docker container.
++3. Paste the **System Prompt** below into the web chat.
++4. In aider, use `/copy-context` to grab the repo state.
++5. Paste that context into the web chat with your request.
++6. Copy the web chat's response (a `/run` command) and paste it into aider to apply changes.
++
++## System Prompt
++
++```text
++this chat is a coding project in conjunction with the tool aider in copy-paste mode.
++Additionally, the actual driver of the edits is qwen2.5-coder:3b, which is a small and not very powerful model.
++For each prompt following this one.
++- minimize total token response to reduce potential context problems.
++- optimize messages for me to copy paste them in and out of gemini and make the whole experience more lightweight.
++- return code suggestions in the format of a .patch file.
++
++Additionally, we won't use the local model at all- simply return to me a /run command I can give aider that will write the contents of your suggestions into a local file named swap_diff.patch, then run patch <TARGET_FILE> swap_diff.patch
++
++Respond "beep boop" to this prompt.
++```

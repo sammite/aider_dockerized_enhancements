@@ -1,11 +1,13 @@
 #!/bin/bash
 
-SYSTEM_PROMPT="
-\"Do not edit the files directly. Instead, write the delivered .patch file contents
-to swap_diff.patch and then run the following command to merge the differences.
-patch <FILE> swap_diff.patch
-Then, zero out the swap_diff.patch file.\"
-"
+#SYSTEM_PROMPT="
+#<instructions>
+#\"Do not edit the files directly. Instead, write the delivered .patch file contents
+#to swap_diff.patch and then run the following command to merge the differences.
+#patch <FILE> swap_diff.patch
+#Then, zero out the swap_diff.patch file.\"
+#</instructions>
+#"
 
 sudo docker run -it \
     --user $(id -u):$(id -g) \
@@ -16,7 +18,5 @@ sudo docker run -it \
     --volume /tmp/.X11-unix:/tmp/.X11-unix \
     aider-xclip \
     --no-check-update \
-    --model ollama_chat/qwen3:1.7b \
-    --copy-paste \
-    --message $SYSTEM_PROMPT \
-    --edit-format editor-diff
+    --model ollama_chat/qwen2.5-coder:3b
+#   --copy-paste 
