@@ -16,5 +16,4 @@ $IS_SUDO docker run -it \
     --volume /tmp/.X11-unix:/tmp/.X11-unix \
     aider-xclip \
     --no-check-update \
-    --model null
-#    --model ollama_chat/$MODEL_SLUG
+    --model ollama_chat/$MODEL_SLUG

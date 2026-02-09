@@ -1,9 +1,12 @@
 # aider_dockerized_enhancements
-Just my personal mods to the docker version of aider
+Some personal mods to aider that were originally monkey patches for some very simple stuff but have spiraled a bit.
 
 This project is designed for users who have access to much more powerful models via a web interface (like Gemini) than via API, but who still want to utilize the CLI workflow of aider.
 
-My Dockerfile enhancements allow running aider in a container specifically for **copy-paste mode**, as first-party support for this workflow within Docker seems to be missing.
+My Dockerfile enhancements allow running aider in a container specifically for **copy-paste mode(sort of)**, as first-party support for this workflow within Docker seems to be missing.
+However, the prompt I'm recommending and workflow I'm recommending are techniques you can use to do more than just copy paste- they let you leverage your webui only model with a very
+weak local model to the point of being actually useful and fast even with 6GB of VRAM (what I have), though if you go with the "no model at all" option below, you can literally run this on 
+anything that will just run the basic aider binary.
 
 *Tested on Ubuntu 22.04.*
 
@@ -92,3 +95,27 @@ which is probably a good thing, and there may be a simple way around it (other t
 
 The model you use via the webui sometimes doesn't return a valid diff- you will start to notice what needs an extra prompt pretty quickly if you 
 play with this long enough though!
+
+
+## why?
+
+Good question. There's a few use cases for this.
+
+- no monies
+    Some people can't afford to burn money on api access. As far as I can tell, this is a decent way to make a webui workflow more cli friendly, and the fact that
+    aider can build a whole context map makes that significantly less painful than having to manually describe your file/folder structure. The original idea was inspired by
+    https://aider.chat/docs/usage/copypaste.html where they indicate that the process is within the T&C of most providers (for now at least). 
+    All I'm doing is making that same copypaste mode a tiny bit easier to use in certain constrained situations.
+
+- You can use a webui ai, but only a webui ai.
+    Maybe your org bought licenses for some fancy AI stuff but only web browser- if you're a software dev org this may sound weird, but
+    other industries often don't think API first. So if your license is the only way you have data governance, or it's a better model for your use case,
+    or you just get more tokens that way, this set of techniques could be pretty valuable to you, since you can run it with a potato local model, or no local model at all.
+
+- You enjoy doing things the harder way for sometimes no real reason.
+    This project forced me to learn more about what the actual constraints of low end models are, how to more effectively pRoMpT eNgInEeR, 
+    and play with some goofy ideas.
+
+    As Sanderson's Second law states.
+
+    Limitations > Powers
