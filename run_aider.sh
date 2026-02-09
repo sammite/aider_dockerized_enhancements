@@ -2,7 +2,12 @@
 
 [ -f .env ] && source .env
 
-sudo docker run -it \
+IS_SUDO=""
+if ! docker ps >/dev/null 2>&1; then
+    IS_SUDO="sudo"
+fi
+
+$IS_SUDO docker run -it \
     --user $(id -u):$(id -g) \
     --network host \
     --volume $(pwd):/app \
@@ -11,5 +16,5 @@ sudo docker run -it \
     --volume /tmp/.X11-unix:/tmp/.X11-unix \
     aider-xclip \
     --no-check-update \
-    --model ollama_chat/$MODEL_SLUG
-#   --copy-paste 
+    --model null
+#    --model ollama_chat/$MODEL_SLUG

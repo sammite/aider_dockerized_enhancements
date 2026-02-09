@@ -7,28 +7,55 @@ My Dockerfile enhancements allow running aider in a container specifically for *
 
 *Tested on Ubuntu 22.04.*
 
+build:
+
+```
+docker build aider-xclip .
+```
+
+Create a .env with the following:
+
+```
+MODEL_HOST_IP=<IP of your ollama or similar>
+MODEL_SLUG=<model slug>
+```
 run with:
 
 
 ```
-
-sudo docker run -it \
+$IS_SUDO docker run -it \
     --user $(id -u):$(id -g) \
     --network host \
     --volume $(pwd):/app \
     --env DISPLAY=$DISPLAY \
-    --env OLLAMA_API_BASE=http://localhost:11434 \
+    --env OLLAMA_API_BASE=http://$MODEL_HOST_IP:11434 \
     --volume /tmp/.X11-unix:/tmp/.X11-unix \
     aider-xclip \
     --no-check-update \
-    --model ollama_chat/qwen3:1.7b \
-    --copy-paste \
-    --message $SYSTEM_PROMPT
-    --edit-format editor-diff
+    --model ollama_chat/$MODEL_SLUG
 
 ```
 
-in conjunction with locallama to properly copy paste in and out of a docker. 
+You can even run this without a model at all, if you're ok with doing all of your commits completely manually.
+I have a shell script, `run_aider.sh` that I am using to test it, and also to play with prompting further.
+
+```
+$IS_SUDO docker run -it \
+    --user $(id -u):$(id -g) \
+    --network host \
+    --volume $(pwd):/app \
+    --env DISPLAY=$DISPLAY \
+    --env OLLAMA_API_BASE=http://$MODEL_HOST_IP:11434 \
+    --volume /tmp/.X11-unix:/tmp/.X11-unix \
+    aider-xclip \
+    --no-check-update \
+    --model null
+
+```
+
+This is because the actual commands we need minimum- `/copy-context` and `/run` don't need a functional model.
+
+
 
 ## Workflow
 
@@ -52,6 +79,16 @@ For each prompt following this one.
 Additionally, we won't use the local model at all- simply return to me a /run command I can give aider 
 that will write the contents of your suggestions into a local file named swap_diff.patch, then run this general command:
 patch --ignore-whitespace --verbose <TARGET_FILE> swap_diff.patch
+The totality of the command you return should be in `markdown` for easy plaintext copy and pasting.
 
 Respond "beep boop" to this prompt.
 ```
+
+
+## Gotchas
+
+It seems like `--copy-paste` mode doesn't work- as does the aider inline `/paste` command. It doesn't like you pasting in `/run` commands,
+which is probably a good thing, and there may be a simple way around it (other than forking) but normal copy paste works fine in my testing.
+
+The model you use via the webui sometimes doesn't return a valid diff- you will start to notice what needs an extra prompt pretty quickly if you 
+play with this long enough though!
