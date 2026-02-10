@@ -10,12 +10,6 @@ anything that will just run the basic aider binary.
 
 *Tested on Ubuntu 22.04.*
 
-build:
-
-```
-docker build aider-xclip .
-```
-
 Create a .env with the following:
 
 ```
@@ -26,35 +20,12 @@ run with:
 
 
 ```
-$IS_SUDO docker run -it \
-    --user $(id -u):$(id -g) \
-    --network host \
-    --volume $(pwd):/app \
-    --env DISPLAY=$DISPLAY \
-    --env OLLAMA_API_BASE=http://$MODEL_HOST_IP:11434 \
-    --volume /tmp/.X11-unix:/tmp/.X11-unix \
-    aider-xclip \
-    --no-check-update \
-    --model ollama_chat/$MODEL_SLUG
-
+ sudo docker compose run --rm aider
 ```
 
 You can even run this without a model at all, if you're ok with doing all of your commits completely manually.
-I have a shell script, `run_aider.sh` that I am using to test it, and also to play with prompting further.
+for that you can just pass the string "null" to MODEL_SLUG.
 
-```
-$IS_SUDO docker run -it \
-    --user $(id -u):$(id -g) \
-    --network host \
-    --volume $(pwd):/app \
-    --env DISPLAY=$DISPLAY \
-    --env OLLAMA_API_BASE=http://$MODEL_HOST_IP:11434 \
-    --volume /tmp/.X11-unix:/tmp/.X11-unix \
-    aider-xclip \
-    --no-check-update \
-    --model null
-
-```
 
 This is because the actual commands we need minimum- `/copy-context` and `/run` don't need a functional model.
 
@@ -64,12 +35,11 @@ This is because the actual commands we need minimum- `/copy-context` and `/run` 
 
 1. Start a web chat (e.g., Gemini).
 2. Start this docker container.
-3. Paste the **System Prompt** below into the web chat.
-4. In aider, use `/copy-context` to grab the repo state.
-5. Paste that context into the web chat with your request.
-6. Copy the web chat's response (a `/run` command) and paste it into aider to apply changes.
+3. In aider, use `/copy-context` to grab the repo state.
+4. Paste that context into the web chat with your request.
+5. Copy the web chat's response (a `/run` command) and paste it into aider to apply changes.
 
-## System Prompt
+## System Prompt that we monkey patch into the aider commands.py file.
 
 ```text
 this chat is a coding project in conjunction with the tool aider in copy-paste mode.
