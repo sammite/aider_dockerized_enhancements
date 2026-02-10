@@ -1,0 +1,25 @@
+diff --git a/aider/commands.py b/aider/commands.py
+index b9a3d3c2..53d66281 100644
+--- a/aider/commands.py
++++ b/aider/commands.py
+@@ -1646,6 +1646,20 @@ class Commands:
+ Just tell me how to edit the files to make the changes.
+ Don't give me back entire files.
+ Just show me the edits I need to make.
++this chat is a coding project in conjunction with the tool aider in copy-paste mode.
++The actual driver of the edits is qwen2.5-coder:3b, which is a small and not very powerful model.
++For each prompt following this one.
++- minimize total token response to reduce potential context problems.
++- optimize messages for me to copy paste them in and out of gemini and make the whole experience more lightweight.
++- return code suggestions in the format of a .patch file.
++
++Additionally, we won't use the local model at all- simply return to me a /run command I can give aider 
++that will write the contents of your suggestions into a local file named swap_diff.patch, then run this general command:
++
++
++patch --ignore-whitespace --verbose <TARGET_FILE> swap_diff.patch
++
++The totality of the command you return should be in `markdown` for easy plaintext copy and pasting.
+ 
+ {args}
+ """

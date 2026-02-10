@@ -1,0 +1,18 @@
+services:
+  aider:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    stdin_open: true
+    tty: true
+    user: "${UID:-1000}:${GID:-1000}"
+    security_opt:
+      - no-new-privileges:true
+    working_dir: /app
+    volumes:
+      - .:/app
+      - /tmp/.X11-unix:/tmp/.X11-unix:ro
+    environment:
+      - DISPLAY=${DISPLAY}
+      - OLLAMA_API_BASE=http://${MODEL_HOST_IP}:11434
+    command: ["--no-check-update", "--model", "ollama_chat/${MODEL_SLUG}"]
