@@ -23,7 +23,7 @@ run with:
  sudo docker compose run --rm aider
 ```
 
-You can even run this without a model at all, if you're ok with doing all of your commits completely manually.
+You can even run this without a local model at all, if you're ok with doing all of your commits completely manually.
 for that you can just pass the string "null" to MODEL_SLUG.
 
 
